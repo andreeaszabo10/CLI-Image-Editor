@@ -1,133 +1,76 @@
 Copyright Szabo Cristina-Andreea 2022-2023
 
-# Image editor
+# Image Editor
 
-Task 1: "LOAD"
+## Description
 
-- am utilizat doua structuri, una care sa retina valorile culorilor fiecarui
-pixel si una care sa retina caracteristicile unei imagini
-- am verificat daca o imagine a fost incarcata anterior, iar daca acesta este
-cazul, eliberez memoria acesteia
-- aloc memorie pentru o noua imagine
--citesc caracteristicile imaginii (tipul, dimensiunile si intensitatea maxima),
-apoi elementele matricei imaginii in functie de tipul acesteia
-- pentru imaginile in tonuri de gri am folosit aceeasi valoare pentru toate
-culorile unui pixel, iar pentru cele color le-am citit separat
-- am introdus valorile si in cele doua copii cu care voi lucra pe parcurs
+This Image Editor is a command-line program designed to process and manipulate images in PGM and PPM formats. It allows users to perform various image operations, including selection, cropping, rotation, filtering, and histogram equalization.
 
-Task 2: "SELECT"
+## Features
 
-- aceasta operatie selecteaza o bucata din imagine, iar cateva din urmatoarele
-operatii vor fi realizate doar pe aceasta selectie
-- imaginea principala (img) va deveni avea elementele selectiei si dimensiunile
-acesteia
-- verific daca operatia se poate efectua si afisez mesajele de eroare
-corespunzatoare
-- citesc noile capete ale selectiei si adaug in img, adica in selectie
-elementele corespunzatoare
+- **Load Images:** Supports grayscale (P2, P5) and color (P3, P6) formats.
+- **Selection and Cropping:** Allows users to select a portion of the image for further modifications.
+- **Histogram and Equalization:** Computes histograms and applies equalization to improve contrast.
+- **Rotation:** Supports 90, 180, and 270-degree rotations.
+- **Filters:** Includes blur, Gaussian blur, sharpening, and edge detection filters.
+- **Saving Options:** Saves images in both ASCII and binary formats.
+- **Memory Management:** Ensures efficient memory handling and cleanup upon exiting.
 
-Task 3: "SELECT ALL"
+## Usage
 
-- aceasta operatie face ca img sa redevina intreaga imagine, folosind copia 1
-- daca selectia are aceleasi dimensiuni cu copia, selectia totala este deja
-efectuata, asa ca ies din functie, deoarece ar fi inutil sa efectuez operatia
-- introduc elementele selectiei in copia 1 la locul lor, deoarece elementele
-pot avea modificari
-- img va primi caracteristicile si elementele copiei, adica ale intregii
-imagini
+### Load an Image
 
-Task 4: "HISTOGRAM"
+```
+LOAD <filename>
+```
 
-- am calculat dimensiunea unui interval apoi am calculat aparitiile pentru
-valorile din fiecare interval
-- calculez, de asemenea, numarul maxim de aparitii de pe un interval
-- am calculat numarul de stele pentru fiecare interval cu formula,
-utilizand aparitiile, numarul maxim de stele care pot fi folosite
-si numarul maxim 
-- afisez histograma
+### Select an Area
 
-Task 5: "EQUALIZE"
+```
+SELECT x1 y1 x2 y2
+```
 
-- aceasta operatie regleaza valorile pixelilor dupa formula data
-- am verificat daca operatia se poate efectua si am afisat mesajele de eroare
-corespunzatoare
-- am reinitializat capetele daca imaginea si copia au aceleasi dimensiuni
-- initializez cu 0 vectorul aparitiilor valorilor pixelilor si apoi am calculat
-numarul de aparitii a fiecarei valoare
-- am facut acest lucru pentru o singura culoare pentru ca imaginea e in tonuri
-de gri
-- am calculat aria imaginii si valorile noilor pixeli dupa formula data,
-calculand suma aparitiilor valorilor pana la valoarea anterioara a pixelului,
-inmultind-o cu 255 si impartind totul la arie
-- pun noile valori in selectie si copie pentru dimensiunile corespunzatoare
+### Select the Entire Image
 
-Task 6: "ROTATE"
+```
+SELECT ALL
+```
 
-- am verificat daca operatia se poate efectua si am afisat mesajele de eroare
-corespunzatoare 
-- am luat o funcție pentru o singura rotire la -90 de grade care foloseste trei
-matrice auxiliare in care retin valorile pixelilor matricei rotite, una pentru
-fiecare culoare
-- eliberez memoria imaginii si a copiei 1 si le aloc memorie pentru noile
-dimensiuni, daca selectia are aceleasi dimensiuni ca si copia
-- interschimb valorile dimensiunilor si pun in copie si selectie noile valori,
-in functie de dimensiunile lor si pozitia elementelor
-- am luat acelasi caz pentru 90 si -270 de grade, la fel pentru -90 si 270
-- daca unghiul e 0 sau 360, indiferent de semn, imaginea ajunge in pozitia
-initiala, asa ca nu are rost sa efectuez operatia
+### Apply a Filter
 
-Task 7: "CROP"
+```
+APPLY <FILTER>
+```
 
-- aceasta operatie aduce copiile la dimensiunile selectiei
-- copiile primesc elementele selectiei
-- verific daca operatia se poate efectua operatia si afisez mesajele de eroare
-corespunzatoare
-- eliberez memoria copiilor si le aloc memorie pentru noile dimensiuni
-- dupa ce adaug elemenetele selectiei in copii, eliberez memoria imaginii img,
-deoarece aceasta are de fapt dimensiunile initiale, chiar daca doar selectia
-se modifica
-- elementele din afara selectiei sunt ignorate pana cand dimensiunile finale
-devin cele ale selectiei
-- actualizez noile capete ale selectiei si atribui copiilor dimensiunile
-selectiei
+Filters available: BLUR, GAUSSIAN\_BLUR, SHARPEN, EDGE
 
-Task 8: "APPLY"
+### Rotate an Image
 
-- in functie de parametrii primiti, se aplica un filtru pe selectie
-- am verificat daca operatia se poate efectua si am afisat mesajele de eroare
-corespunzatoare
-- am folosit un if pentru fiecare filtru ca sa verific daca pixelul pentru care
-calculez noua valoare are destui vecini, iar daca nu are valoarea finala va fi
-cea initiala
-- pentru parametrul "BLUR" am luat doua foruri ca sa calculez noua valoare
-pentru fiecare pixel, apoi alte doua foruri ca sa calculez suma valorilor
-pixelilor din jurul pixelului principal, pe care apoi o impart la 9 si va
-deveni noua valoare a pixelului principal, apoi adaug selectia in copie
-- pe acelasi principiu am facut si "GAUSSIAN BLUR", "SHARPEN" si "EDGE", doar 
-ca inainte de suma am inmultit fiecare element cu valoarea corespunzatoare din
-kernel
-- sumele pentru fiecare culoare a unui pixel le retin in 3 matrice ajutatoare
-alocate dinamic, una pentru fiecare culoare
+```
+ROTATE <angle>
+```
 
-Task 9: "SAVE"
+Supported angles: 90, 180, 270
 
-- verific daca este vreo imagine incarcata
-- fac selectia totala a imaginii ca sa salvez imaginea totala
-- salvez imaginea in functie de tipul ei (color sau in tonuri de gri) si in
-functie de modul in care este ceruta savlarea prin comanda (ascii sau binar)
-- deschid fisierul, apoi scriu caracteristicile imaginii in functie de cerinta
-- scriu elementele matricei imaginii in functie de modul in care trebuie
-salvata imaginea (cu fwrite daca e binar si fprintf daca e ascii)
-- apoi am refacut selectia cu elementele si dimensiunile anterioare selctarii
-totale
+### Save an Image
 
-Task 10: "EXIT"
+```
+SAVE <filename> [ascii]
+```
 
-- eliberarea tuturor resurselor si iesirea din program
-- verific daca a fost alocata vreo imagine inainte, daca nu dealoc doar
-vectorii
-carora le-am alocat memorie inainte de operatia de incarcare a unei imagini
-in memorie
-- altfel, dealoc toate resursele pe care le-am alocat anterior dinamic
-- opresc bucla "while" de citire a comenzilor cu un break pentru a iesi din
-program
+If `ascii` is specified, the image is saved in ASCII format.
+
+### Exit
+
+```
+EXIT
+```
+
+## Implementation Details
+
+The program uses structured data types to store pixel and image information. Memory is dynamically allocated and managed for efficient processing. Each command is carefully validated to handle errors gracefully and prevent crashes.
+
+## Author
+
+Szabo Cristina-Andreea (2022-2023)
+
