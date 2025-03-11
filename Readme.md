@@ -70,7 +70,3 @@ EXIT
 
 The program uses structured data types to store pixel and image information. Memory is dynamically allocated and managed for efficient processing. Each command is carefully validated to handle errors gracefully and prevent crashes.
 
-## Author
-
-Szabo Cristina-Andreea (2022-2023)
-
